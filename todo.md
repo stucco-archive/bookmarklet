@@ -15,9 +15,7 @@
   - ensure things send by using encodeuricomponent
   - to write data: fs.writeFile; in callback say next; query
   - bookmark needs identifier (ip address?)
-- components of bookmarklet:
-  - Relevance of doc to cyber sec; no yes
-  - Importance of doc to for adding context to an event; 5star
-  - Credibility of source of doc
 - Style
   - font-awesome for stars
+- Modal
+  - use PicoModal
