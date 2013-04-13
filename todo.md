@@ -9,6 +9,7 @@
   - credibility
 - route structure: 
   - /:id/question?relevant=val?importance=val?credibility=val
+  - also add date
 - bookmarklets tips:
   - post when it loses pagevisibility
   - ensure things send by using encodeuricomponent
@@ -18,3 +19,5 @@
   - Relevance of doc to cyber sec; no yes
   - Importance of doc to for adding context to an event; 5star
   - Credibility of source of doc
+- Style
+  - font-awesome for stars
