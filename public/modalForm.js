@@ -1,71 +1,105 @@
-// paste single-line css here
-var formCSS = 'body { font-family: "Trebuchet MS";}h3 { padding-top: 0px;}label, div.label {  line-height:150%;  font-weight:bold;}.pico-content { overflow: auto; height: 80%;}.formSection { margin-top: 15px;}#rankedPairs > label {   display: inline-block;  width: 180px;}.label:after, label:not(.optional):after {   content: " *";  color: red;} ';
+(function() {
+  userid = idGenerator(8);
 
-// inject css
-var style = document.createElement('style');
-style.type = 'text/css';
-style.innerHTML = formCSS;
-document.getElementsByTagName('head')[0].appendChild(style);
+  loadD3();
 
-// paste single-line form here
-var stuccoForm = '<h1>Stucco Document Relevance</h1><form id="stucco" action="/" method="POST"><div class="formSection"><label for="relevance">Relevance</label><br>Not Relevant<input type="radio" name="relevance" value="1" required><input type="radio" name="relevance" value="2" required><input type="radio" name="relevance" value="3" required><input type="radio" name="relevance" value="4" required><input type="radio" name="relevance" value="5" required>Very Relevant</div><div class="formSection"><label for="importance">Importance</label><br>Not Important<input type="radio" name="importance" value="1" required><input type="radio" name="importance" value="2" required><input type="radio" name="importance" value="3" required><input type="radio" name="importance" value="4" required><input type="radio" name="importance" value="5" required>Very Important</div><div class="formSection"><label for="credibility">Credibility</label><br>Not Credible<input type="radio" name="credibility" value="1" required><input type="radio" name="credibility" value="2" required><input type="radio" name="credibility" value="3" required><input type="radio" name="credibility" value="4" required><input type="radio" name="credibility" value="5" required>Very Credible</div><div class="formSection">  <input type="submit" value="Submit"></div></form>';
-
-
-var modalForm = function(source) {
-  // load source html
-//  var sourceRequest = new XMLHttpRequest();
-//  sourceRequest.open('GET', 'forms/form.css', false);
-//  sourceRequest.send();
-//  console.log(sourceRequest.responseText.replace(/(\r\n|\n|\r)/gm,""));
-
-  // launches a modal dialog with the form
-  var modal = picoModal({
-    content: stuccoForm,   
-    closeButton: false,
-    shadowClose: false
-  }); 
-
-  // find the just-created form
-  var form = d3.select(modal.modalElem).select('form');
-
-  // submit the data using d3.xhr
-  form.on('submit', function(){
-    d3.event.preventDefault();
-
-    var formData = {
-      relevance:    getRadioSelection('relevance'),
-      importance:   getRadioSelection('importance'),
-      credibility:  getRadioSelection('credibility')
-    };
-
-    var data = {
-      "form": formData,
-      "userid": userid,
-      "type": 'form'
-    }; 
-
-    var xhr = d3.xhr('/')
-      .header('Content-type', 'application/json')
-      .post(JSON.stringify(data));
-
-    xhr.on('load', function (res) {
-      console.log('successful POST of '+data.type);
-    })
-    .on('error', function (res) {
-      console.log('failed POST of '+data.type);
-    })
-
-    modal.close();
-  });
-}
-
-function getRadioSelection(radioName) {
-  var radios = document.getElementsByName(radioName);
-  var value;
-  for (var i = 0; i < radios.length; i++) {
-    if (radios[i].type === 'radio' && radios[i].checked) {
-      value = radios[i].value;       
-    }
+  function loadD3() {
+    loadScript('http://d3js.org/d3.v3.min.js', loadPico);
   }
-  return value;
-}
+
+  function loadPico() {
+    loadScript('http://localhost:8001/components/PicoModal/picoModal.js', modalForm);
+  }
+  
+  // from http://stackoverflow.com/a/950146
+  function loadScript(url, callback) {
+    // adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+  
+    // then bind the event to the callback function 
+    // there are several events for cross browser compatibility
+    script.onreadystatechange = callback;
+    script.onload = callback;
+  
+    // fire the loading
+    head.appendChild(script);
+  }
+  
+  function modalForm(source) {
+    // load form css
+    d3.select('head').append('link')
+      .attr('rel', 'stylesheet')
+      .attr('type', 'text/css')
+      .attr('href', 'http://localhost:8001/forms/form.css');
+
+    // load source html
+    var sourceRequest = new XMLHttpRequest();
+    sourceRequest.open('GET', 'http://localhost:8001/forms/stucco.html', false);
+    sourceRequest.send();
+  
+    // launches a modal dialog with the form
+    var modal = picoModal({
+      content: sourceRequest.responseText,   
+      closeButton: false,
+      shadowClose: false
+    }); 
+  
+    // find the just-created form
+    var form = d3.select(modal.modalElem).select('form');
+  
+    // submit the data using d3.xhr
+    form.on('submit', function(){
+      d3.event.preventDefault();
+  
+      var formData = {
+        relevance:    getRadioSelection('relevance'),
+        importance:   getRadioSelection('importance'),
+        credibility:  getRadioSelection('credibility')
+      };
+  
+      var data = {
+        "form": formData,
+        "userid": userid,
+        "type": 'form'
+      }; 
+  
+      var xhr = d3.xhr('/')
+        .header('Content-type', 'application/json')
+        .post(JSON.stringify(data));
+  
+      xhr.on('load', function (res) {
+        console.log('successful POST of '+data.type);
+      })
+      .on('error', function (res) {
+        console.log('failed POST of '+data.type);
+      })
+  
+      modal.close();
+    });
+  }
+  
+  function getRadioSelection(radioName) {
+    var radios = document.getElementsByName(radioName);
+    var value;
+    for (var i = 0; i < radios.length; i++) {
+      if (radios[i].type === 'radio' && radios[i].checked) {
+        value = radios[i].value;       
+      }
+    }
+    return value;
+  }
+  
+  function idGenerator(idLength)
+  {
+  	var id = "";
+    var possible = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for( var i=0; i < idLength; i++ ) {
+        id += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return id;
+  }
+
+})();

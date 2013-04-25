@@ -3,17 +3,25 @@
 <meta charset="utf-8">
 <title>STUCCO Document Relevance Study</title>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="components/PicoModal/picoModal.js"></script>
+<style>
+.bookmarklet {
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 1em;
+  background: #666;
+  color: white;
+}
+</style>
 
 <p> STUCCO Document Relevance Study </p>
 
-<script src="modalForm.js"></script>
-<script src="idGenerator.js"></script>
+<h3>The Bookmarklet</h3>
+<p>
+  <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https://raw.github.com/stucco/bookmarklet/master/public/modalForm.js'); } else { e.setAttribute('src', 'http://raw.github.com/stucco/bookmarklet/master/public/modalForm.js'); } document.body.appendChild(e); })();">Stucco Bookmarklet</a>&nbsp;
+  <span>← Drag this to your bookmarks bar.</span>
+</p>
+<p>(You can click on the link instead to test it on this page immediately.)</p>
 
-<script>
-
-userid = idGenerator(8);
-modalForm();
-
-</script>
+<!-- <script src="modalForm.js"></script> -->
