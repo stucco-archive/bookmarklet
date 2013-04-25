@@ -66,7 +66,7 @@
         "type": 'form'
       }; 
   
-      var xhr = d3.xhr('/')
+      var xhr = d3.xhr('http://localhost:8001/')
         .header('Content-type', 'application/json')
         .post(JSON.stringify(data));
   
