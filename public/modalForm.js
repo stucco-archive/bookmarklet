@@ -1,8 +1,14 @@
-// paste single-line form here
-var stuccoForm = '<link rel="stylesheet" type="text/css" href="forms/form.css"><h1>Stucco Document Relevance</h1><form id="stucco" action="/" method="POST"><div class="formSection"><label for="relevance">Relevance</label><br>Not Relevant<input type="radio" name="relevance" value="1" required><input type="radio" name="relevance" value="2" required><input type="radio" name="relevance" value="3" required><input type="radio" name="relevance" value="4" required><input type="radio" name="relevance" value="5" required>Very Relevant</div><div class="formSection"><label for="importance">Importance</label><br>Not Important<input type="radio" name="importance" value="1" required><input type="radio" name="importance" value="2" required><input type="radio" name="importance" value="3" required><input type="radio" name="importance" value="4" required><input type="radio" name="importance" value="5" required>Very Important</div><div class="formSection"><label for="credibility">Credibility</label><br>Not Credible<input type="radio" name="credibility" value="1" required><input type="radio" name="credibility" value="2" required><input type="radio" name="credibility" value="3" required><input type="radio" name="credibility" value="4" required><input type="radio" name="credibility" value="5" required>Very Credible</div><div class="formSection">  <input type="submit" value="Submit"></div></form>';
-
 // paste single-line css here
-var formCSS = 'body { font-family: "Trebuchet MS";}h3 { padding-top: 0px;}label, div.label {  line-height:150%;  font-weight:bold;}.pico-content { overflow: auto; height: 80%;}.formSection { margin-top: 15px;}#rankedPairs > label {   display: inline-block;  width: 180px;}.label:after, label:not(.optional):after {   content: ' *';  color: red;} ';
+var formCSS = 'body { font-family: "Trebuchet MS";}h3 { padding-top: 0px;}label, div.label {  line-height:150%;  font-weight:bold;}.pico-content { overflow: auto; height: 80%;}.formSection { margin-top: 15px;}#rankedPairs > label {   display: inline-block;  width: 180px;}.label:after, label:not(.optional):after {   content: " *";  color: red;} ';
+
+// inject css
+var style = document.createElement('style');
+style.type = 'text/css';
+style.innerHTML = formCSS;
+document.getElementsByTagName('head')[0].appendChild(style);
+
+// paste single-line form here
+var stuccoForm = '<h1>Stucco Document Relevance</h1><form id="stucco" action="/" method="POST"><div class="formSection"><label for="relevance">Relevance</label><br>Not Relevant<input type="radio" name="relevance" value="1" required><input type="radio" name="relevance" value="2" required><input type="radio" name="relevance" value="3" required><input type="radio" name="relevance" value="4" required><input type="radio" name="relevance" value="5" required>Very Relevant</div><div class="formSection"><label for="importance">Importance</label><br>Not Important<input type="radio" name="importance" value="1" required><input type="radio" name="importance" value="2" required><input type="radio" name="importance" value="3" required><input type="radio" name="importance" value="4" required><input type="radio" name="importance" value="5" required>Very Important</div><div class="formSection"><label for="credibility">Credibility</label><br>Not Credible<input type="radio" name="credibility" value="1" required><input type="radio" name="credibility" value="2" required><input type="radio" name="credibility" value="3" required><input type="radio" name="credibility" value="4" required><input type="radio" name="credibility" value="5" required>Very Credible</div><div class="formSection">  <input type="submit" value="Submit"></div></form>';
 
 
 var modalForm = function(source) {
