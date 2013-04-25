@@ -38,15 +38,3 @@ var modalForm = function(source) {
     modal.close();
   });
 }
-
-//  // on form submit, post and close modal
-//  $(form).submit(function() {
-//    var data = {}; 
-//    data.form = $(this).serializeObject();
-//    data.visPrimUserID = visPrimUserID;
-//    data.form.visPrimUserID = visPrimUserID;
-//    data.type = $(form).attr('id'); 
-//    $.post('/', data, function(){ console.log('POST of %s successful', data.type); });
-//    modal.close();
-//    return false;
-//  });
