@@ -18,8 +18,14 @@ var modalForm = function(source) {
   form.on('submit', function(){
     d3.event.preventDefault();
 
+    var formData = {
+      relevance:    getRadioSelection('relevance'),
+      importance:   getRadioSelection('importance'),
+      credibility:  getRadioSelection('credibility')
+    };
+
     var data = {
-      "form": form2js(form.node()),
+      "form": formData,
       "userid": userid,
       "type": 'form'
     }; 
@@ -37,4 +43,15 @@ var modalForm = function(source) {
 
     modal.close();
   });
+}
+
+function getRadioSelection(radioName) {
+  var radios = document.getElementsByName(radioName);
+  var value;
+  for (var i = 0; i < radios.length; i++) {
+    if (radios[i].type === 'radio' && radios[i].checked) {
+      value = radios[i].value;       
+    }
+  }
+  return value;
 }
