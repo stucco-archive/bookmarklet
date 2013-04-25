@@ -4,9 +4,25 @@ var express   =  require('express'),
     fs        =  require('fs'),
     dataDir   =  'userdata/'
 
+// CORS middleware
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Length, Content-Type, Date');
+
+  next()
+}
+
 // Init
 var app = express()
 app.use(express.bodyParser())
+app.use(allowCrossDomain)
+app.use(express.static(__dirname + '/public'))
+
+// OPTIONS
+app.options('/', function(req, res) {
+    res.send(200);
+});
 
 // POST
 app.post('/', function handlePost(req, res) {
@@ -18,9 +34,10 @@ app.post('/', function handlePost(req, res) {
   if(d.svg)
     saveSVG([d.type, d.userid, d.count, d.svgSource].join('-')+'.svg', d.svg)
 
-  res.send();
+  res.send(200);
 })
 
+// Process form
 var saveForm = function saveForm(name, json) {
   var params = { 
     data: [json], 
@@ -32,16 +49,6 @@ var saveForm = function saveForm(name, json) {
     console.log('csv saved, %s', name)
   })
 }
-
-var saveSVG = function saveSVG(name, svg) {
-  fs.writeFile(dataDir+name, svg, function(err) {
-    if (err) throw err
-    console.log('svg saved, %s', name)
-  })
-}
-
-// Serve static pages
-app.use(express.static(__dirname + '/public'))
 
 // LISTEN
 app.listen(8001)
