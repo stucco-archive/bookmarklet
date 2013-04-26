@@ -1,8 +1,12 @@
-var express   =  require('express'),
-    csv       =  require('csv'),
-    json2csv  =  require('json2csv'),
-    fs        =  require('fs'),
-    dataDir   =  'userdata/'
+var express  = require('express'),
+    https    = require('https');
+    http     = require('http');
+    csv      = require('csv'),
+    json2csv = require('json2csv'),
+    fs       = require('fs'),
+    dataDir  = 'userdata/'
+
+
 
 // CORS middleware
 var allowCrossDomain = function(req, res, next) {
@@ -53,3 +57,12 @@ var saveForm = function saveForm(name, json) {
 // LISTEN
 app.listen(8001)
 console.log('Listening on port 8001')
+
+// This line is from the Node.js HTTPS documentation.
+var options = {
+  key: fs.readFileSync('ssl/server.key'),
+  cert: fs.readFileSync('ssl/server.crt')
+};
+
+http.createServer(app).listen(80);
+https.createServer(options, app).listen(443);
