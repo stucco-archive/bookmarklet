@@ -1,4 +1,6 @@
-ssl/*
+ssl/*.key
+ssl/*.csr
+ssl/*.crt
 userdata/*
 *DS_Store
 *.js~
