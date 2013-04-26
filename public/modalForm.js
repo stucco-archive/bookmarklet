@@ -1,14 +1,18 @@
 (function() {
+  var protocol = document.location.protocol;
+
+  console.log(protocol);
+
   userid = idGenerator(8);
 
   loadD3();
 
   function loadD3() {
-    loadScript('http://d3js.org/d3.v3.min.js', loadPico);
+    loadScript(protocol+'//localhost/components/d3js/d3.v3.min.js', loadPico);
   }
 
   function loadPico() {
-    loadScript('http://localhost:8001/components/PicoModal/picoModal.js', modalForm);
+    loadScript(protocol+'//localhost/components/PicoModal/picoModal.js', modalForm);
   }
   
   // from http://stackoverflow.com/a/950146
@@ -33,11 +37,11 @@
     d3.select('head').append('link')
       .attr('rel', 'stylesheet')
       .attr('type', 'text/css')
-      .attr('href', 'http://localhost:8001/forms/form.css');
+      .attr('href', protocol+'//localhost/forms/form.css');
 
     // load source html
     var sourceRequest = new XMLHttpRequest();
-    sourceRequest.open('GET', 'http://localhost:8001/forms/stucco.html', false);
+    sourceRequest.open('GET', protocol+'//localhost/forms/stucco.html', false);
     sourceRequest.send();
   
     // launches a modal dialog with the form
@@ -66,7 +70,7 @@
         "type": 'form'
       }; 
   
-      var xhr = d3.xhr('http://localhost:8001/')
+      var xhr = d3.xhr(protocol+'//localhost/')
         .header('Content-type', 'application/json')
         .post(JSON.stringify(data));
   
