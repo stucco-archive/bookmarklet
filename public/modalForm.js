@@ -37,6 +37,11 @@
     d3.select('head').append('link')
       .attr('rel', 'stylesheet')
       .attr('type', 'text/css')
+      .attr('href', protocol+'//localhost/components/cleanslate/cleanslate.css');
+
+    d3.select('head').append('link')
+      .attr('rel', 'stylesheet')
+      .attr('type', 'text/css')
       .attr('href', protocol+'//localhost/forms/form.css');
 
     // load source html
