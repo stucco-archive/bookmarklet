@@ -24,6 +24,7 @@ app.use(allowCrossDomain)
 app.use(express.static(__dirname + '/public'))
 
 // OPTIONS
+// TODO see if I can remove this
 app.options('/', function(req, res) {
     res.send(200);
 });
@@ -35,6 +36,8 @@ app.post('/', function handlePost(req, res) {
   if(d.form)
     saveForm([d.type, d.userid].join('-')+'.csv', d.form)
 
+  // TODO remove
+  // TODO semicolon
   if(d.svg)
     saveSVG([d.type, d.userid, d.count, d.svgSource].join('-')+'.svg', d.svg)
 

@@ -1,3 +1,9 @@
+// TODO add john issue for CSS
+// TODO where save form
+// TODO save url; in saveForm; saveToRedis to avoid write issues
+// TODO remove svg in server
+// TODO get rid of d3
+
 (function() {
   var protocol = document.location.protocol;
 
@@ -11,6 +17,7 @@
     loadScript(protocol+'//localhost/components/d3js/d3.v3.min.js', loadPico);
   }
 
+  // TODO minify picoModal.js
   function loadPico() {
     loadScript(protocol+'//localhost/components/PicoModal/picoModal.js', modalForm);
   }
@@ -32,6 +39,7 @@
     head.appendChild(script);
   }
   
+  // TODO npm recess for cleanslate
   function modalForm(source) {
     // load form css
     d3.select('head').append('link')
@@ -83,6 +91,8 @@
         console.log('successful POST of '+data.type);
       })
       .on('error', function (res) {
+        // TODO make another post
+        // pushover for notifications on phone
         console.log('failed POST of '+data.type);
       })
   
@@ -101,6 +111,7 @@
     return value;
   }
   
+  // TODO email thingy
   function idGenerator(idLength)
   {
   	var id = "";
