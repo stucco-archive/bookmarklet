@@ -1,16 +1,10 @@
 (function() {
   var protocol = document.location.protocol;
 
-  console.log(protocol);
+  var userid = idGenerator(8);
 
-  userid = idGenerator(8);
-
-  loadD3();
-
-  function loadD3() {
-    loadScript(protocol+'//localhost/components/d3js/d3.v3.min.js', loadPico);
-  }
-
+  // load picoModal before launching the modal form
+  loadPico();
   function loadPico() {
     loadScript(protocol+'//localhost/components/PicoModal/picoModal.js', modalForm);
   }
@@ -28,21 +22,25 @@
     script.onreadystatechange = callback;
     script.onload = callback;
   
-    // fire the loading
     head.appendChild(script);
   }
   
   function modalForm(source) {
     // load form css
-    d3.select('head').append('link')
-      .attr('rel', 'stylesheet')
-      .attr('type', 'text/css')
-      .attr('href', protocol+'//localhost/components/cleanslate/cleanslate.css');
+    var head = document.getElementsByTagName('head')[0];
 
-    d3.select('head').append('link')
-      .attr('rel', 'stylesheet')
-      .attr('type', 'text/css')
-      .attr('href', protocol+'//localhost/forms/form.css');
+    // TODO make a loadCSS function with href as parameter
+    var cleanslate = document.createElement('link');
+    cleanslate.rel = 'stylesheet';
+    cleanslate.type = 'text/css';
+    cleanslate.href = protocol+'//localhost/components/cleanslate/cleanslate.css';
+    head.appendChild(cleanslate);
+
+    var formcss = document.createElement('link');
+    formcss.rel = 'stylesheet';
+    formcss.type = 'text/css';
+    formcss.href = protocol+'//localhost/forms/form.css';
+    head.appendChild(formcss);
 
     // load source html
     var sourceRequest = new XMLHttpRequest();
@@ -56,12 +54,13 @@
       shadowClose: false
     }); 
   
-    // find the just-created form
-    var form = d3.select(modal.modalElem).select('form');
+    document.getElementById('stuccoSubmit').addEventListener(
+      'click', postData, false
+    );
   
-    // submit the data using d3.xhr
-    form.on('submit', function(){
-      d3.event.preventDefault();
+    // submit the data using XMLHttpRequest()
+    function postData(e) {
+      e.preventDefault();
   
       var formData = {
         relevance:    getRadioSelection('relevance'),
@@ -74,20 +73,22 @@
         "userid": userid,
         "type": 'form'
       }; 
-  
-      var xhr = d3.xhr(protocol+'//localhost/')
-        .header('Content-type', 'application/json')
-        .post(JSON.stringify(data));
-  
-      xhr.on('load', function (res) {
+
+      var postReq = new XMLHttpRequest();
+      postReq.open('POST', protocol+'//localhost/', true);
+      postReq.setRequestHeader('Content-type', 'application/json')
+      postReq.send(JSON.stringify(data));
+
+      postReq.addEventListener('load', function() {
         console.log('successful POST of '+data.type);
-      })
-      .on('error', function (res) {
+      }, false);
+
+      postReq.addEventListener('error', function() {
         console.log('failed POST of '+data.type);
-      })
+      }, false);
   
       modal.close();
-    });
+    }
   }
   
   function getRadioSelection(radioName) {
