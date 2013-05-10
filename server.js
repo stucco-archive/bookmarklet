@@ -38,6 +38,13 @@ app.post('/', function handlePost(req, res) {
   res.send(200);
 })
 
+// POST (error)
+app.post('/error', function handlePost(req, res) {
+  var d = req.body;
+  console.log(d.msg);
+  res.send(200);
+})
+
 // Process form
 var saveForm = function saveForm(name, json) {
   var params = { 

@@ -1,59 +1,28 @@
 (function() {
-  var protocol = document.location.protocol;
-
-  var userid = idGenerator(8);
+  var protocol = document.location.protocol
+    , userid = idGenerator(8);
 
   // load picoModal before launching the modal form
-  loadPico();
-  function loadPico() {
-    loadScript(protocol+'//localhost/components/PicoModal/picoModal.js', modalForm);
-  }
-  
-  // from http://stackoverflow.com/a/950146
-  function loadScript(url, callback) {
-    // adding the script tag to the head as suggested before
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-  
-    // then bind the event to the callback function 
-    // there are several events for cross browser compatibility
-    script.onreadystatechange = callback;
-    script.onload = callback;
-  
-    head.appendChild(script);
-  }
-  
+  loadScript(protocol+'//localhost/components/PicoModal/picoModal.js', modalForm);
+   
   function modalForm(source) {
-    // load form css
-    var head = document.getElementsByTagName('head')[0];
+    // Load cleanslate and the form's css
+    loadCSS(protocol+'//localhost/components/cleanslate/cleanslate.css');
+    loadCSS(protocol+'//localhost/forms/form.css');
 
-    // TODO make a loadCSS function with href as parameter
-    var cleanslate = document.createElement('link');
-    cleanslate.rel = 'stylesheet';
-    cleanslate.type = 'text/css';
-    cleanslate.href = protocol+'//localhost/components/cleanslate/cleanslate.css';
-    head.appendChild(cleanslate);
-
-    var formcss = document.createElement('link');
-    formcss.rel = 'stylesheet';
-    formcss.type = 'text/css';
-    formcss.href = protocol+'//localhost/forms/form.css';
-    head.appendChild(formcss);
-
-    // load source html
-    var sourceRequest = new XMLHttpRequest();
-    sourceRequest.open('GET', protocol+'//localhost/forms/stucco.html', false);
-    sourceRequest.send();
+    // load form html
+    var req = new XMLHttpRequest();
+    req.open('GET', protocol+'//localhost/forms/stucco.html', false);
+    req.send();
   
     // launches a modal dialog with the form
     var modal = picoModal({
-      content: sourceRequest.responseText,   
+      content: req.responseText,   
       closeButton: false,
       shadowClose: false
     }); 
   
+    // watch for click events on form
     document.getElementById('stuccoSubmit').addEventListener(
       'click', postData, false
     );
@@ -73,22 +42,25 @@
         "userid": userid,
         "type": 'form'
       }; 
-
-      var postReq = new XMLHttpRequest();
-      postReq.open('POST', protocol+'//localhost/', true);
-      postReq.setRequestHeader('Content-type', 'application/json')
-      postReq.send(JSON.stringify(data));
-
-      postReq.addEventListener('load', function() {
+        
+      var post = postJSON(protocol+'//localhost/', JSON.stringify(data));
+      post.addEventListener('load', function() {
         console.log('successful POST of '+data.type);
       }, false);
-
-      postReq.addEventListener('error', function() {
-        console.log('failed POST of '+data.type);
+      post.addEventListener('error', function() {
+        postJSON(protocol+'//localhost/error', JSON.stringify({msg: "error on POST"}));
       }, false);
   
       modal.close();
     }
+  }
+
+  function postJSON(loc, data) {
+    var req = new XMLHttpRequest();
+    req.open('POST', loc, true);
+    req.setRequestHeader('Content-type', 'application/json');
+    req.send(data);
+    return req;
   }
   
   function getRadioSelection(radioName) {
@@ -110,6 +82,31 @@
         id += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return id;
+  }
+
+  // from http://stackoverflow.com/a/950146
+  function loadScript(url, callback) {
+    // adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+  
+    // then bind the event to the callback function 
+    // there are several events for cross browser compatibility
+    script.onreadystatechange = callback;
+    script.onload = callback;
+  
+    head.appendChild(script);
+  }
+
+  function loadCSS(file) {
+    var head = document.getElementsByTagName('head')[0];
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.type = 'text/css';
+    css.href = file;
+    head.appendChild(css);
   }
 
 })();
