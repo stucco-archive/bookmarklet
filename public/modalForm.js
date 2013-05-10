@@ -3,11 +3,11 @@
     , userid = idGenerator(8);
 
   // load picoModal before launching the modal form
-  loadScript(protocol+'//localhost/components/PicoModal/picoModal.js', modalForm);
+  loadScript(protocol+'//localhost/components/PicoModal/picoModal.min.js', modalForm);
    
   function modalForm(source) {
     // Load cleanslate and the form's css
-    loadCSS(protocol+'//localhost/components/cleanslate/cleanslate.css');
+    loadCSS(protocol+'//localhost/components/cleanslate/cleanslate.min.css');
     loadCSS(protocol+'//localhost/forms/form.css');
 
     // load form html
