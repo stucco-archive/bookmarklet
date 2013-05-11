@@ -32,6 +32,7 @@
       e.preventDefault();
   
       var formData = {
+        url:         document.URL,
         relevance:    getRadioSelection('relevance'),
         importance:   getRadioSelection('importance'),
         credibility:  getRadioSelection('credibility')
