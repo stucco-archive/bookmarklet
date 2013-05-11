@@ -7,7 +7,14 @@ var express  = require('express')
   , csv      = require('csv')
   , json2csv = require('json2csv')
   , fs       = require('fs')
+  , redis    = require('redis')
+  , client   = redis.createClient()
   , dataDir  = 'userdata/';
+
+// redis connection test
+client.on("connect", function() {
+  console.log('connected to redis');
+});
 
 var output = 'csv'; // 'csv' or 'redis'
 
