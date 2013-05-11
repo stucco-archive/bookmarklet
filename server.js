@@ -16,7 +16,6 @@ var output = 'csv'; // 'csv' or 'redis'
 
 // setup for redis
 if (output === 'redis') {
-
   redisClient = redis.createClient();
 
   // redis connection test

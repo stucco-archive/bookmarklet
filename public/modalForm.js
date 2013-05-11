@@ -1,6 +1,6 @@
 (function() {
   var protocol = document.location.protocol
-    , userid = idGenerator(8);
+    , userid = stuccoId;
 
   // load picoModal before launching the modal form
   loadScript(protocol+'//localhost/components/PicoModal/picoModal.min.js', modalForm);
