@@ -7,5 +7,6 @@
     "express": "3.x",
     "csv": "0.2.x",
     "json2csv": "2.x"
+    "redis": "0.8.x"
   }
 }
