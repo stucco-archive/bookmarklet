@@ -1,4 +1,4 @@
-/* global require:true */
+/* global require:true, console:true, process:true, __dirname:true */
 'use strict';
 
 var express  = require('express')
@@ -8,15 +8,22 @@ var express  = require('express')
   , json2csv = require('json2csv')
   , fs       = require('fs')
   , redis    = require('redis')
-  , client   = redis.createClient()
+  , redisClient
   , dataDir  = 'userdata/';
 
-// redis connection test
-client.on("connect", function() {
-  console.log('connected to redis');
-});
 
 var output = 'csv'; // 'csv' or 'redis'
+
+// setup for redis
+if (output === 'redis') {
+
+  redisClient = redis.createClient();
+
+  // redis connection test
+  redisClient.on('connect', function() {
+    console.log('Connected to redis.');
+  });
+}
 
 // CORS middleware
 var allowCrossDomain = function(req, res, next) {
@@ -35,7 +42,7 @@ app.use(express.static(__dirname + '/public'));
 // OPTIONS
 // TODO see if I can remove this
 app.options('/', function(req, res) {
-    res.send(200);
+  res.send(200);
 });
 
 // POST
@@ -57,7 +64,7 @@ var saveForm = function saveForm(name, json) {
   var params = { 
     data: [json], 
     fields: Object.keys(json) 
-  }
+  };
   json2csv(params, function(err, csvData) {
     if (err) throw err;
     csv().from(csvData).to(dataDir+name);
@@ -71,7 +78,23 @@ var sslOptions = {
   cert: fs.readFileSync('ssl/server.crt')
 };
 
-http.createServer(app).listen(80);
-https.createServer(sslOptions, app).listen(443);
+http.createServer(app).listen(80, function (err) {
+  if (!err) {
+    console.log('Listening on port 80');
+  }
+});
+https.createServer(sslOptions, app).listen(443, function (err) {
+  if (!err) {
+    console.log('Listening on port 443');
+  }
+});
 
-console.log('Listening on port 80 and 443');
+process.on('uncaughtException', function (err) {
+  if (err.code === 'EACCES') {
+    console.log('Unable to start server - you must start as root user.');
+  }
+  else {
+    console.log(err);
+  }
+  process.exit(1);
+});
