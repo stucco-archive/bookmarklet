@@ -1,0 +1,14 @@
+--- 
+applications: 
+  .: 
+    framework: 
+      info: 
+        exec: 
+        mem: 64M
+        description: Node.js Application
+      name: node
+    infra: aws
+    url: stucco.aws.af.cm
+    instances: 1
+    name: stucco
+    mem: 256M
