@@ -44,10 +44,13 @@ function makeId() {
   var email = d3.select('#email').property('value')
     , hash  = md5(email);
 
+  var host  = '//stucco.aws.af.cm/';
+//  var host  = '//localhost/';
+
   d3.select('#stuccoId').text('Id: '+hash);
 
   // generate the href to be added to the bookmark
-  var href = "javascript:javascript: (function () { var f = document.createElement('script'); f.innerHTML = 'var stuccoId = \"" + hash + "\";'; document.body.appendChild(f); var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https://localhost/modalForm.js'); } else { e.setAttribute('src', 'http://localhost/modalForm.js'); } document.body.appendChild(e); })();";
+  var href = "javascript:javascript: (function () { var f = document.createElement('script'); f.innerHTML = 'var stuccoId = \"" + hash + "\";'; document.body.appendChild(f); var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https:"+host+"/modalForm.js'); } else { e.setAttribute('src', 'http:"+host+"/modalForm.js'); } document.body.appendChild(e); })();";
   d3.select('#bookmarklet').attr('href', href);
 
   d3.select('#bookmarklet').classed('hidden', false);
