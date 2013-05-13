@@ -17,6 +17,10 @@ Then access the bookmarklet page at [localhost](http://localhost).
 ### AppFog
 There is a `var host` in public/index.html, public/modalForm.js, and app.js. Switch these if you are running locally or on AppFog.
 
+To access the redis instance on AppFog:
+
+    af tunnel stucco-redis
+
 ### ssl keys
 
 Note, the server will not work with https pages unless you have server.crt, server.csr, and server.key in the ssl/ directory.
