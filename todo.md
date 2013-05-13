@@ -14,14 +14,18 @@
 
 - route structure: 
   - /:id/question?relevant=val?importance=val?credibility=val
+<<<<<<< HEAD
 
+=======
+  - also add date
+>>>>>>> fb0c4f0af0b00f850fef381c9469e5604a106d80
 - bookmarklets tips:
   - disable drag and drop until email
   - post when it loses pagevisibility
   - ensure things send by using encodeuricomponent
   - to write data: fs.writeFile; in callback say next; query
   - bookmark needs identifier (ip address?)
-- components of bookmarklet:
-  - Relevance of doc to cyber sec; no yes
-  - Importance of doc to for adding context to an event; 5star
-  - Credibility of source of doc
+- Style
+  - font-awesome for stars
+- Modal
+  - use PicoModal
