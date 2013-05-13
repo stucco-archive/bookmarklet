@@ -12,7 +12,7 @@ var express  = require('express')
   , dataDir  = 'userdata/';
 
 
-var output = 'csv'; // 'csv' or 'redis'
+var output = 'redis'; // 'csv' or 'redis'
 
 // setup for redis
 if (output === 'redis') {
@@ -38,16 +38,14 @@ app.use(express.bodyParser());
 app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/public'));
 
-// OPTIONS
-// TODO see if I can remove this
-app.options('/', function(req, res) {
-  res.send(200);
-});
-
 // POST
 app.post('/', function handlePost(req, res) {
   var d = req.body;
-  saveForm([d.type, d.userid].join('-')+'.csv', d.form);
+  d.postId = (+new Date()).toString(36);
+  if(output === 'csv')
+    saveCSV(d.postId+'.csv', d);
+  if(output === 'redis')
+    saveRedis(d);
   res.send(200);
 })
 
@@ -58,8 +56,14 @@ app.post('/error', function handlePost(req, res) {
   res.send(200);
 })
 
+var saveRedis = function saveRedis(d) {
+  redisClient.hmset(d.postId, d);
+  console.log('saved to redis: ' + d.postId);
+}
+
 // Process form
-var saveForm = function saveForm(name, json) {
+// TODO refactor to saveCSV (something more specific)
+var saveCSV = function saveCSV(name, json) {
   var params = { 
     data: [json], 
     fields: Object.keys(json) 
