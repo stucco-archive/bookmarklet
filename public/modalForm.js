@@ -1,18 +1,21 @@
 (function() {
   var protocol = document.location.protocol
     , userid = stuccoId;
+  
+//  var host  = host+'';
+  var host  = '//stucco.aws.af.cm/';
 
   // load picoModal before launching the modal form
-  loadScript(protocol+'//localhost/components/PicoModal/picoModal.min.js', modalForm);
+  loadScript(protocol+host+'components/PicoModal/picoModal.min.js', modalForm);
    
   function modalForm(source) {
     // Load cleanslate and the form's css
-    loadCSS(protocol+'//localhost/components/cleanslate/cleanslate.min.css');
-    loadCSS(protocol+'//localhost/forms/form.css');
+    loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
+    loadCSS(protocol+host+'forms/form.css');
 
     // load form html
     var req = new XMLHttpRequest();
-    req.open('GET', protocol+'//localhost/forms/stucco.html', false);
+    req.open('GET', protocol+host+'forms/stucco.html', false);
     req.send();
   
     // launches a modal dialog with the form
@@ -39,12 +42,12 @@
         userid:       userid
       };
   
-      var post = postJSON(protocol+'//localhost/', JSON.stringify(data));
+      var post = postJSON(protocol+host+'', JSON.stringify(data));
       post.addEventListener('load', function() {
         console.log('successful POST');
       }, false);
       post.addEventListener('error', function() {
-        postJSON(protocol+'//localhost/error', JSON.stringify({msg: "error on POST"}));
+        postJSON(protocol+host+'error', JSON.stringify({msg: "error on POST"}));
       }, false);
   
       modal.close();
