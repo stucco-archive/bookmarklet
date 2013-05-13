@@ -13,6 +13,7 @@ var express  = require('express')
 
 
 var output = 'redis'; // 'csv' or 'redis'
+var host = 'appfog'; // 'appfog' or 'local'
 
 // setup for redis
 if (output === 'redis') {
@@ -37,6 +38,11 @@ var app = express();
 app.use(express.bodyParser());
 app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/public'));
+
+// OPTIONS (NOTE: necessary for https response)
+app.options('/', function(req, res) {
+  res.send(200);
+});
 
 // POST
 app.post('/', function handlePost(req, res) {
@@ -82,16 +88,26 @@ var sslOptions = {
   cert: fs.readFileSync('ssl/server.crt')
 };
 
-http.createServer(app).listen(80, function (err) {
-  if (!err) {
-    console.log('Listening on port 80');
-  }
-});
-https.createServer(sslOptions, app).listen(443, function (err) {
-  if (!err) {
-    console.log('Listening on port 443');
-  }
-});
+if( host === 'appfog' ) {
+  http.createServer(app).listen(process.env.VCAP_APP_PORT || 3000, function (err) {
+    if (!err) {
+      console.log('Listening on port ' + process.env.VCAP_APP_PORT || 3000);
+    }
+  });
+}
+
+if( host === 'local' ){
+  http.createServer(app).listen(80, function (err) {
+    if (!err) {
+      console.log('Listening on port 80');
+    }
+  });
+  https.createServer(sslOptions, app).listen(443, function (err) {
+    if (!err) {
+      console.log('Listening on port 443');
+    }
+  });
+}
 
 process.on('uncaughtException', function (err) {
   if (err.code === 'EACCES') {
