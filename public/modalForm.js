@@ -31,22 +31,17 @@
     function postData(e) {
       e.preventDefault();
   
-      var formData = {
-        url:         document.URL,
+      var data = {
+        url:          document.URL,
         relevance:    getRadioSelection('relevance'),
         importance:   getRadioSelection('importance'),
-        credibility:  getRadioSelection('credibility')
+        credibility:  getRadioSelection('credibility'),
+        userid:       userid
       };
   
-      var data = {
-        "form": formData,
-        "userid": userid,
-        "type": 'form'
-      }; 
-        
       var post = postJSON(protocol+'//localhost/', JSON.stringify(data));
       post.addEventListener('load', function() {
-        console.log('successful POST of '+data.type);
+        console.log('successful POST');
       }, false);
       post.addEventListener('error', function() {
         postJSON(protocol+'//localhost/error', JSON.stringify({msg: "error on POST"}));
