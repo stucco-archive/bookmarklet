@@ -14,6 +14,11 @@ Run the server as root:
 
 Then access the bookmarklet page at [localhost](http://localhost).
 
+### ssl keys
+
+Note, the server will not work with https pages unless you have server.crt, server.csr, and server.key in the ssl/ directory.
+See ssl/readme.md for info on how to generate these keys.
+
 Data collected
 --------
 
