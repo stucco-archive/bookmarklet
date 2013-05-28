@@ -13,7 +13,7 @@ var express  = require('express')
 
 
 var output = 'redis'; // 'csv' or 'redis'
-var host = 'appfog'; // 'appfog' or 'local'
+var host = 'local'; // 'appfog' or 'local'
 
 // setup for redis
 if (output === 'redis') {

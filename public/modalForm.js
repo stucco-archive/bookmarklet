@@ -2,8 +2,8 @@
   var protocol = document.location.protocol
     , userid = stuccoId;
   
-//  var host  = host+'';
-  var host  = '//stucco.aws.af.cm/';
+  var host  = '//localhost/';
+//  var host  = '//stucco.aws.af.cm/';
 
   // load picoModal before launching the modal form
   loadScript(protocol+host+'components/PicoModal/picoModal.min.js', modalForm);

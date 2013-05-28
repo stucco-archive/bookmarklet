@@ -44,8 +44,8 @@ function makeId() {
   var email = d3.select('#email').property('value')
     , hash  = md5(email);
 
-  var host  = '//stucco.aws.af.cm/';
-//  var host  = '//localhost/';
+//  var host  = '//stucco.aws.af.cm/';
+  var host  = '//localhost/';
 
   d3.select('#stuccoId').text('Id: '+hash);
 
