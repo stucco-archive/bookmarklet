@@ -7,7 +7,7 @@
 <h1>Stucco Document Relevance</h1>
 
 <div class="formSection">
-<label for="relevance">Relevance</label>
+<label for="relevance">How relevant is this document to cyber security?</label>
 <br>
 Not Relevant
 <input type="radio" name="relevance" value="1" required>
@@ -19,19 +19,17 @@ Very Relevant
 </div>
 
 <div class="formSection">
-<label for="importance">Importance</label>
+<label for="importance">Which domain concepts are described in this document?</label>
 <br>
-Not Important
-<input type="radio" name="importance" value="1" required>
-<input type="radio" name="importance" value="2" required>
-<input type="radio" name="importance" value="3" required>
-<input type="radio" name="importance" value="4" required>
-<input type="radio" name="importance" value="5" required>
-Very Important
+<input type="radio" name="importance" value="vulnerability" required> vulnerability
+<input type="radio" name="importance" value="exploit" required> exploit
+<input type="radio" name="importance" value="malware" required> malware
+<input type="radio" name="importance" value="attack" required> attack
+<input type="radio" name="importance" value="attacker" required> attacker
 </div>
 
 <div class="formSection">
-<label for="credibility">Credibility</label>
+<label for="credibility">How credible is the source of the document?</label>
 <br>
 Not Credible
 <input type="radio" name="credibility" value="1" required>
