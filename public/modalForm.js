@@ -36,12 +36,13 @@
   
       var data = {
         url:          document.URL,
+        date:         new Date(),
         relevance:    getRadioSelection('relevance'),
         importance:   getRadioSelection('importance'),
         credibility:  getRadioSelection('credibility'),
         userid:       userid
       };
-  
+
       var post = postJSON(protocol+host+'', JSON.stringify(data));
       post.addEventListener('load', function() {
         console.log('successful POST');
