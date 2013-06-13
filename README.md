@@ -10,7 +10,7 @@ Start redis:
 
 Run the server as root:
 
-    sudo node server.js
+    sudo node app.js
 
 Then access the bookmarklet page at [localhost](http://localhost).
 
