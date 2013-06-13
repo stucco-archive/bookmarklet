@@ -1,119 +1,72 @@
 /* global require:true, console:true, process:true, __dirname:true */
 'use strict'
 
-var express  = require('express')
-  , https    = require('https')
-  , http     = require('http')
-  , csv      = require('csv')
-  , json2csv = require('json2csv')
-  , fs       = require('fs')
-  , redis    = require('redis')
+var express     = require('express')
+  , https       = require('https')
+  , http        = require('http')
+  , fs          = require('fs')
+  , redis       = require('redis')
   , redisClient
-  , dataDir  = 'userdata/'
+  , dataDir     = 'userdata/'
+  , host        = 'local' // 'appfog' or 'local'
+  , sslOptions  = {
+      key: fs.readFileSync('ssl/server.key'),
+      cert: fs.readFileSync('ssl/server.crt')
+    }
 
-var output = 'redis' // 'csv' or 'redis'
-var host = 'local' // 'appfog' or 'local'
-
-// setup for redis
-if (output === 'redis') {
-  redisClient = redis.createClient()
-
-  // redis connection test
-  redisClient.on('connect', function() {
-    console.log('Connected to redis.')
+var app = express()
+  .use(express.static(__dirname + '/public'))
+  .use(express.bodyParser())
+  .options('/', function(req, res) { res.send(200) })
+  .post('/', function handlePost(req, res) {
+    var d = req.body
+    d.postId = (+new Date()).toString(36)
+    d.timestamp = (new Date()).getTime()
+    saveRedis(d)
+    res.send(200)
   })
-}
+  .post('/error', function handlePost(req, res) {
+    var d = req.body
+    console.log(d.msg)
+    res.send(200)
+  })
 
-// CORS middleware
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = function allowCrossDomain(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   res.header('Access-Control-Allow-Headers', 'Content-Length, Content-Type, Date')
   next()
 }
-
-// Init
-var app = express()
-app.use(express.bodyParser())
 app.use(allowCrossDomain)
-app.use(express.static(__dirname + '/public'))
-
-// OPTIONS (NOTE: necessary for https response)
-app.options('/', function(req, res) {
-  res.send(200)
-})
-
-// POST
-app.post('/', function handlePost(req, res) {
-  var d = req.body
-  d.postId = (+new Date()).toString(36)
-  d.timestamp = (new Date()).getTime()
-  if(output === 'csv')
-    saveCSV(d.postId+'.csv', d)
-  if(output === 'redis')
-    saveRedis(d)
-  res.send(200)
-})
-
-// POST (error)
-app.post('/error', function handlePost(req, res) {
-  var d = req.body
-  console.log(d.msg)
-  res.send(200)
-})
 
 var saveRedis = function saveRedis(d) {
   redisClient.hmset(d.postId, d)
   console.log('saved to redis: ' + d.postId)
 }
 
-// Process form
-// TODO refactor to saveCSV (something more specific)
-var saveCSV = function saveCSV(name, json) {
-  var params = { 
-    data: [json], 
-    fields: Object.keys(json) 
-  }
-  json2csv(params, function(err, csvData) {
-    if (err) throw err
-    csv().from(csvData).to(dataDir+name)
-    console.log('csv saved, %s', name)
-  })
-}
-
-// SSL Options
-var sslOptions = {
-  key: fs.readFileSync('ssl/server.key'),
-  cert: fs.readFileSync('ssl/server.crt')
-}
+redisClient = redis.createClient()
+redisClient.on('connect', function() {
+  console.log('Connected to redis.')
+})
 
 if( host === 'appfog' ) {
   http.createServer(app).listen(process.env.VCAP_APP_PORT || 3000, function (err) {
-    if (!err) {
-      console.log('Listening on port ' + process.env.VCAP_APP_PORT || 3000)
-    }
+    if (!err) console.log('Listening on port ' + process.env.VCAP_APP_PORT || 3000)
   })
 }
-
 if( host === 'local' ){
   http.createServer(app).listen(80, function (err) {
-    if (!err) {
-      console.log('Listening on port 80')
-    }
+    if (!err) console.log('Listening on port 80')
   })
   https.createServer(sslOptions, app).listen(443, function (err) {
-    if (!err) {
-      console.log('Listening on port 443')
-    }
+    if (!err) console.log('Listening on port 443')
   })
 }
 
 process.on('uncaughtException', function (err) {
-  if (err.code === 'EACCES') {
+  if (err.code === 'EACCES') 
     console.log('Unable to start server - you must start as root user.')
-  }
-  else {
+  else 
     console.log(err)
-  }
   process.exit(1)
 })
