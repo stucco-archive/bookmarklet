@@ -8,6 +8,7 @@ var protocol = document.location.protocol
 loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
 
 function init(source) {
+  loadCSS('http://yui.yahooapis.com/combo?pure/0.2.0/base-min.css&pure/0.2.0/buttons-min.css&pure/0.2.0/forms-min.css');
   loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
   loadCSS(protocol+host+'stucco.css');
 
@@ -95,7 +96,6 @@ function loadCSS(file) {
 }
 
 function loadHTML(loc) {
-  console.log(loc);
   var req = new XMLHttpRequest();
   req.open('GET', loc, false);
   req.send();
