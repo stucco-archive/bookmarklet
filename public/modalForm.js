@@ -11,7 +11,7 @@
   function modalForm(source) {
     // Load cleanslate and the form's css
     loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
-    loadCSS(protocol+host+'forms/form.css');
+    loadCSS(protocol+host+'css/stucco.css');
 
     // load form html
     var req = new XMLHttpRequest();
