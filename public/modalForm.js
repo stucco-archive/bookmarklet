@@ -11,11 +11,11 @@
   function modalForm(source) {
     // Load cleanslate and the form's css
     loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
-    loadCSS(protocol+host+'css/stucco.css');
+    loadCSS(protocol+host+'stucco.css');
 
     // load form html
     var req = new XMLHttpRequest();
-    req.open('GET', protocol+host+'forms/stucco.html', false);
+    req.open('GET', protocol+host+'stucco.html', false);
     req.send();
   
     // launches a modal dialog with the form
