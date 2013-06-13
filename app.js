@@ -24,9 +24,9 @@ function save(d) {
 
 // Express init and behavior
 var app = express()
+  .use(allowCrossDomain)
   .use(express.static(__dirname + '/public'))
   .use(express.bodyParser())
-  .use(allowCrossDomain)
   .post('/', handlePost)
   .options('/', sendOK)
 function handlePost(req, res) {
