@@ -1,39 +1,41 @@
 (function() {
 var protocol = document.location.protocol
-  , userid = stuccoId; //stuccoId is determined via user email
+  , userid = stuccoId //stuccoId is determined via user email
   , host = '//localhost/';
 //  , host = '//stucco.aws.af.cm/';
 
 // load picoModal before launching the modal form
-loadScript(protocol+host+'components/PicoModal/picoModal.min.js', modalForm);
- 
-function modalForm(source) {
-  // Load cleanslate and the form's css
+loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
+
+function init(source) {
   loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
   loadCSS(protocol+host+'stucco.css');
 
-  // load form html
-  var req = new XMLHttpRequest();
-  req.open('GET', protocol+host+'stucco.html', false);
-  req.send();
+  var modal = launchModal(protocol+host+'stucco.html'); 
 
-  // launches a modal dialog with the form
-  var modal = picoModal({
-    content: req.responseText,   
-    closeButton: false,
-    shadowClose: false
-  }); 
-
-  // watch for click events on form
   document.getElementById('stuccoSubmit').addEventListener(
-    'click', postData, false
+    'click', postAndClose, false
   );
 
-  // submit the data using XMLHttpRequest()
-  function postData(e) {
+  function postAndClose(e) {
     e.preventDefault();
+    var d = processStuccoForm();
+    postJSON(protocol+host+'', JSON.stringify(d));
+    modal.close();
+  }
+}
 
-    var data = {
+function launchModal(loc) {
+  var opts = {
+    content: loadHTML(loc),   
+    closeButton: false,
+    shadowClose: false
+  }  
+  return picoModal(opts); 
+}
+
+function processStuccoForm() {
+  return {
       url:          document.URL,
       date:         new Date(),
       relevance:    getRadioSelection('relevance'),
@@ -41,17 +43,6 @@ function modalForm(source) {
       credibility:  getRadioSelection('credibility'),
       userid:       userid
     };
-
-    var post = postJSON(protocol+host+'', JSON.stringify(data));
-    post.addEventListener('load', function() {
-      console.log('successful POST');
-    }, false);
-    post.addEventListener('error', function() {
-      postJSON(protocol+host+'error', JSON.stringify({msg: "error on POST"}));
-    }, false);
-
-    modal.close();
-  }
 }
 
 function postJSON(loc, data) {
@@ -59,7 +50,12 @@ function postJSON(loc, data) {
   req.open('POST', loc, true);
   req.setRequestHeader('Content-type', 'application/json');
   req.send(data);
-  return req;
+  req.addEventListener('load', function() {
+    console.log('successful POST');
+  }, false);
+  req.addEventListener('error', function() {
+    postJSON(protocol+host+'error', JSON.stringify({msg: "error on POST"}));
+  }, false);
 }
 
 function getRadioSelection(radioName) {
@@ -96,5 +92,13 @@ function loadCSS(file) {
   css.type = 'text/css';
   css.href = file;
   head.appendChild(css);
+}
+
+function loadHTML(loc) {
+  console.log(loc);
+  var req = new XMLHttpRequest();
+  req.open('GET', loc, false);
+  req.send();
+  return req.responseText;
 }
 })();
