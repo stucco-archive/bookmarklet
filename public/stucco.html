@@ -4,47 +4,48 @@
 
 <div id='stucco'>
 
-<form action='/' method='POST'>
+<h2>Document Relevance / Credibility Ratings</h2>
 
-<h1>Stucco Document Relevance</h1>
+<div id="document-title" class="document-meta"></div>
+<div id="document-url" class="document-meta"></div>
 
-<div class="formSection">
-<label for="relevance">How relevant is this document to cyber security?</label>
-<br>
-Not Relevant
-<input type="radio" name="relevance" value="1" required>
-<input type="radio" name="relevance" value="2" required>
-<input type="radio" name="relevance" value="3" required>
-<input type="radio" name="relevance" value="4" required>
-<input type="radio" name="relevance" value="5" required>
-Very Relevant
-</div>
+<form action='/' method='POST' class='pure-form'>
 
-<div class="formSection">
-<label for="concept">Which domain concepts are described in this document?</label>
-<br>
-<input type="radio" name="concept" value="vulnerability" required> vulnerability
-<input type="radio" name="concept" value="exploit" required> exploit
-<input type="radio" name="concept" value="malware" required> malware
-<input type="radio" name="concept" value="attack" required> attack
-<input type="radio" name="concept" value="attacker" required> attacker
-</div>
+<fieldset>
+  <div class="label-block"><label for="relevance">How relevant is this document to cyber security?</label></div>
+  Not Relevant
+  <input class="ranking" type="radio" name="relevance" value="1" required>
+  <input class="ranking" type="radio" name="relevance" value="2" required>
+  <input class="ranking" type="radio" name="relevance" value="3" required>
+  <input class="ranking" type="radio" name="relevance" value="4" required>
+  <input class="ranking" type="radio" name="relevance" value="5" required>
+  Very Relevant
+</fieldset>
 
-<div class="formSection">
-<label for="credibility">How credible is the source of the document?</label>
-<br>
-Not Credible
-<input type="radio" name="credibility" value="1" required>
-<input type="radio" name="credibility" value="2" required>
-<input type="radio" name="credibility" value="3" required>
-<input type="radio" name="credibility" value="4" required>
-<input type="radio" name="credibility" value="5" required>
-Very Credible
-</div>
+<fieldset>
+  <div class="label-block"><label for="concept">Which domain concepts are described in this document?</label></div>
+  <input class="categorical" type="checkbox" name="concept" value="vulnerability" required> vulnerability
+  <input class="categorical" type="checkbox" name="concept" value="exploit" required> exploit
+  <input class="categorical" type="checkbox" name="concept" value="malware" required> malware
+  <input class="categorical" type="checkbox" name="concept" value="attack" required> attack
+  <input class="categorical" type="checkbox" name="concept" value="attacker" required> attacker
+</fieldset>
 
-<div class="formSection">
-  <input id="stuccoSubmit" type='submit' value='Submit'>
-</div>
+<fieldset>
+  <div class="label-block"><label for="credibility">How credible is the source of the document?</label></div>
+  Not Credible
+  <input class="ranking" type="radio" name="credibility" value="1" required>
+  <input class="ranking" type="radio" name="credibility" value="2" required>
+  <input class="ranking" type="radio" name="credibility" value="3" required>
+  <input class="ranking" type="radio" name="credibility" value="4" required>
+  <input class="ranking" type="radio" name="credibility" value="5" required>
+  Very Credible
+</fieldset>
+
+<fieldset>
+  <button id="stuccoSubmit" class="pure-button pure-button-primary">Submit Ratings</button>
+</fieldset>
+
 </form>
 </div>
 
