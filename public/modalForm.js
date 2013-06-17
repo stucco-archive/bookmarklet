@@ -1,7 +1,7 @@
 (function() {
 var protocol = document.location.protocol
   , userid = stuccoId //stuccoId is determined via user email
-  , host = '//localhost/';
+  , host = '//dev.codementum.org/';
 //  , host = '//stucco.aws.af.cm/';
 
 // load picoModal before launching the modal form
