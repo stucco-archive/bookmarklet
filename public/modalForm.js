@@ -8,10 +8,14 @@ var protocol = document.location.protocol
 loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
 
 function init(source) {
+  loadCSS('http://yui.yahooapis.com/combo?pure/0.2.0/base-min.css&pure/0.2.0/buttons-min.css&pure/0.2.0/forms-min.css');
   loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
   loadCSS(protocol+host+'stucco.css');
 
   var modal = launchModal(protocol+host+'stucco.html'); 
+
+  document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
+  document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
 
   document.getElementById('stuccoSubmit').addEventListener(
     'click', postAndClose, false
