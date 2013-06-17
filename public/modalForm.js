@@ -1,21 +1,17 @@
 (function() {
 var protocol = document.location.protocol
   , userid = stuccoId //stuccoId is determined via user email
-  , host = '//dev.codementum.org/';
+  , host = '//localhost/';
 //  , host = '//stucco.aws.af.cm/';
 
 // load picoModal before launching the modal form
-loadScript('/components/PicoModal/picoModal.min.js', init);
+loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
 
 function init(source) {
-  loadCSS('http://yui.yahooapis.com/combo?pure/0.2.0/base-min.css&pure/0.2.0/buttons-min.css&pure/0.2.0/forms-min.css');
-  loadCSS('/components/cleanslate/cleanslate.min.css');
-  loadCSS('/stucco.css');
+  loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
+  loadCSS(protocol+host+'stucco.css');
 
-  var modal = launchModal('/stucco.html'); 
-
-  document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
-  document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
+  var modal = launchModal(protocol+host+'stucco.html'); 
 
   document.getElementById('stuccoSubmit').addEventListener(
     'click', postAndClose, false
@@ -24,7 +20,7 @@ function init(source) {
   function postAndClose(e) {
     e.preventDefault();
     var d = processStuccoForm();
-    postJSON('/', JSON.stringify(d));
+    postJSON(protocol+host+'', JSON.stringify(d));
     modal.close();
   }
 }
@@ -41,7 +37,6 @@ function launchModal(loc) {
 function processStuccoForm() {
   return {
       url:          document.URL,
-      title:        document.title,
       date:         new Date(),
       relevance:    getRadioSelection('relevance'),
       importance:   getRadioSelection('importance'),
@@ -59,7 +54,7 @@ function postJSON(loc, data) {
     console.log('successful POST');
   }, false);
   req.addEventListener('error', function() {
-    postJSON('/error', JSON.stringify({msg: "error on POST"}));
+    postJSON(protocol+host+'error', JSON.stringify({msg: "error on POST"}));
   }, false);
 }
 
@@ -100,6 +95,7 @@ function loadCSS(file) {
 }
 
 function loadHTML(loc) {
+  console.log(loc);
   var req = new XMLHttpRequest();
   req.open('GET', loc, false);
   req.send();

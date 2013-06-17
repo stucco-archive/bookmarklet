@@ -1,36 +1,35 @@
 .pico-content {
-	overflow:auto !important;
-	height:350px !important;
-	width:500px !important;
-  margin-top:100px !important;
+	overflow: auto !important;
+	height: 80% !important;
+	width: 480px !important;
 }
+
 #stucco {
-  display:block !important;
-  font-size:18px !important;
+  display: block !important;
+	font-family: "Trebuchet MS" !important;
+	color: black !important;
+  font-size: 1em !important;
 }
-#stucco fieldset {
-  margin:28px 0 !important;
+
+#stucco h1 {
+  font-size: 2em !important;
 }
-#stucco label-block {
-  margin-bottom:8px !important;
+
+#stucco h3 {
+  font-size: 1em !important;
+	padding-top: 0px !important;
 }
-#stucco label {
-  font-size:1.1em !important;
-  color:#555 !important;
+
+#stucco label, div.label {
+	line-height:150% !important;
+	font-weight:bold !important;
 }
-#stucco .ranking {
-  margin:0 6px !important;
+
+#stucco .formSection {
+	margin-top: 15px !important;
 }
-#stucco .categorical {
-  margin-left:10px !important;
-}
-#stucco .document-meta {
-  margin-top: 5px !important;
-  color: #999 !important;
-}
-#stucco #document-title {
-  font-size: 14px !important;
-}
-#stucco #document-url {
-  font-size: 12px !important;
+
+#stucco .label:after, label:not(.optional):after { 
+	content: ' *' !important;
+	color: red !important;
 }
