@@ -1,18 +1,16 @@
 (function() {
 var protocol = document.location.protocol
-  , userid = stuccoId //stuccoId is determined via user email
-  , host = '//localhost/';
-//  , host = '//stucco.aws.af.cm/';
+  , userid = stuccoId; //stuccoId is determined via user email
 
 // load picoModal before launching the modal form
-loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
+loadScript('/components/PicoModal/picoModal.min.js', init);
 
 function init(source) {
   loadCSS('http://yui.yahooapis.com/combo?pure/0.2.0/base-min.css&pure/0.2.0/buttons-min.css&pure/0.2.0/forms-min.css');
-  loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
-  loadCSS(protocol+host+'stucco.css');
+  loadCSS('/components/cleanslate/cleanslate.min.css');
+  loadCSS('/stucco.css');
 
-  var modal = launchModal(protocol+host+'stucco.html'); 
+  var modal = launchModal('/stucco.html'); 
 
   document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
   document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
@@ -24,7 +22,7 @@ function init(source) {
   function postAndClose(e) {
     e.preventDefault();
     var d = processStuccoForm();
-    postJSON(protocol+host+'', JSON.stringify(d));
+    postJSON('/', JSON.stringify(d));
     modal.close();
   }
 }
@@ -59,7 +57,7 @@ function postJSON(loc, data) {
     console.log('successful POST');
   }, false);
   req.addEventListener('error', function() {
-    postJSON(protocol+host+'error', JSON.stringify({msg: "error on POST"}));
+    postJSON('/error', JSON.stringify({msg: "error on POST"}));
   }, false);
 }
 
