@@ -24,3 +24,13 @@
 #stucco .categorical {
   margin-left:10px !important;
 }
+#stucco .document-meta {
+  margin-top: 5px !important;
+  color: #999 !important;
+}
+#stucco #document-title {
+  font-size: 14px !important;
+}
+#stucco #document-url {
+  font-size: 12px !important;
+}

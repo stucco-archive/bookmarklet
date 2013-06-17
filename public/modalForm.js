@@ -14,6 +14,9 @@ function init(source) {
 
   var modal = launchModal(protocol+host+'stucco.html'); 
 
+  document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
+  document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
+
   document.getElementById('stuccoSubmit').addEventListener(
     'click', postAndClose, false
   );
@@ -38,6 +41,7 @@ function launchModal(loc) {
 function processStuccoForm() {
   return {
       url:          document.URL,
+      title:        document.title,
       date:         new Date(),
       relevance:    getRadioSelection('relevance'),
       importance:   getRadioSelection('importance'),
