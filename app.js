@@ -14,9 +14,10 @@ var express     = require('express')
 
 // Redis init and behavior
 var redisClient = redis.createClient()
-  .on('connect', function() {
-    console.log('Connected to redis.')
-  })
+redisClient.on('connect', function() {
+  console.log('Connected to redis.')
+})
+
 function save(d) {
   redisClient.hmset(d.postId, d)
   console.log('saved to redis: ' + d.postId)
@@ -29,6 +30,7 @@ var app = express()
   .use(express.bodyParser())
   .post('/', handlePost)
   .options('/', sendOK)
+
 function handlePost(req, res) {
   var d = req.body
   d.postId = (+new Date()).toString(36)
@@ -36,15 +38,18 @@ function handlePost(req, res) {
   save(d)
   res.send(200)
 }
+
 function sendOK(req, res) {
   res.send(200);
 }
+
 function allowCrossDomain(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   res.header('Access-Control-Allow-Headers', 'Content-Length, Content-Type, Date')
   next()
 }
+
 // host config and server creation
 if( host === 'appfog' ) {
   createServer(process.env.VCAP_APP_PORT || 3000)
@@ -53,6 +58,7 @@ if( host === 'local' ){
   createServer(80)
   createServer(443, sslOptions)
 }
+
 function createServer(port, opts) {
   if(opts)
     https.createServer(opts, app).listen(port, handleErr)
