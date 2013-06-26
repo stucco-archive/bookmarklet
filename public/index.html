@@ -1,96 +1,96 @@
 <!DOCTYPE html>
 <head>
-  <meta charset="utf-8">
-  <title>Stucco Relevance / Credibility Study</title>
-  <meta name="description" content="User study for Stucco project">
-  <meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
+<title>Stucco Relevance / Credibility Study</title>
+<meta name="description" content="User study for Stucco project">
+<meta name="viewport" content="width=device-width">
 
-  <link rel="stylesheet" href="pure.css" />
+<link rel="stylesheet" href="pure.css" />
 
-  <script src="components/md5/md5.min.js"></script>
+<script src="components/md5/md5.min.js"></script>
 
-  <style>
-    body {
-      margin: 40px 60px;
-      font-size: 18px;
-    }
-    .container {
-      width: 600px;
-      margin: 0 auto;
-    }
-    #initialHide p {
-      padding: 10px 0;
-    }
-    #stuccoId {
-      color:#777;
-      font-size: 90%;
-    }
-    #bookmarklet {
-      padding: 4px 10px;
-      font-size: 16px;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 1em;
-      background: #777;
-      color: white;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+<style>
+  body {
+    margin: 40px 60px;
+    font-size: 18px;
+  }
+  .container {
+    width: 600px;
+    margin: 0 auto;
+  }
+  #initialHide p {
+    padding: 10px 0;
+  }
+  #stuccoId {
+    color:#777;
+    font-size: 90%;
+  }
+  #bookmarklet {
+    padding: 4px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 1em;
+    background: #777;
+    color: white;
+  }
+  .hidden {
+    display: none;
+  }
+</style>
 </head>
 <body>
 
-  <div class="container">
-    <h2>Stucco Relevance / Credibility Study </h2>
+<div class="container">
+  <h2>Stucco Relevance / Credibility Study </h2>
 
-    <div class="instructions">
-      <p>Enter your email to generate a unique identification string.</p>
-      <p>Your email is <strong>not</strong> stored, only the hash is used.</p>
-    </div>
-    <form class="pure-form">
-      <fieldset>
-        <br />
-        <input id="email" class="pure-input-1-2" name="email" type="email" placeholder="email address" >
-        <button id="createIdBtn" class="pure-button pure-button-primary" onclick="createId();return false;">Create ID</button>
-      </fieldset>
-    </form>
-
-    <div id="initialHide" class="hidden">
-      <p id="stuccoId"></p>
-
-      <p>
-        <a id="bookmarklet">Stucco Bookmarklet</a>
-        <span id="drag">← Drag this to your bookmarks bar.</span>
-      </p>
-
-      <p id="clickTest">(Click the bookmarklet to immediately test on this page.)</p>
-    </div>
+  <div class="instructions">
+    <p>Enter your email to generate a unique identification string.</p>
+    <p>Your email is <strong>not</strong> stored, only the hash is used.</p>
   </div>
+  <form class="pure-form">
+    <fieldset>
+      <br />
+      <input id="email" class="pure-input-1-2" name="email" type="email" placeholder="email address" >
+      <button id="createIdBtn" class="pure-button pure-button-primary" onclick="createId();return false;">Create ID</button>
+    </fieldset>
+  </form>
 
-  <script type="text/javascript">
-    var $ = function(id) { return document.getElementById(id); };
+  <div id="initialHide" class="hidden">
+    <p id="stuccoId"></p>
 
-    function createId () {
-      'use strict';
-      var email = $('email').value
-        , hash = md5(email ? email : new Date().getTime())
-        , host = '//dev.codementum.org/' ; // 'stucco.aws.af.cm'
-        
-      $('stuccoId').innerHTML = 'ID: &nbsp; ' + hash;
+    <p>
+      <a id="bookmarklet">Stucco Bookmarklet</a>
+      <span id="drag">← Drag this to your bookmarks bar.</span>
+    </p>
 
-      addBookmarklet(hash, host);
-      revealBookmarklet();
-    }
+    <p id="clickTest">(Click the bookmarklet to immediately test on this page.)</p>
+  </div>
+</div>
 
-    function addBookmarklet(hash, host) {
-      var href = "javascript:javascript: (function () { var f = document.createElement('script'); f.innerHTML = 'var stuccoId = \"" + hash + "\"; var host = \"" + host + "\";'; document.body.appendChild(f); var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https:"+host+"modalForm.js'); } else { e.setAttribute('src', 'http:"+host+"modalForm.js'); } document.body.appendChild(e); })();";
-      $('bookmarklet').setAttribute('href', href);
-    }
+<script type="text/javascript">
+  var $ = function(id) { return document.getElementById(id); };
 
-    function revealBookmarklet() {
-      $('initialHide').style.display = 'block';
-    }
-  </script>
+  function createId () {
+    'use strict';
+    var email = $('email').value
+      , hash = md5(email ? email : new Date().getTime())
+      , host = '//dev.codementum.org/' ; // 'stucco.aws.af.cm'
+      
+    $('stuccoId').innerHTML = 'ID: &nbsp; ' + hash;
+
+    addBookmarklet(hash, host);
+    revealBookmarklet();
+  }
+
+  function addBookmarklet(hash, host) {
+    var href = "javascript:javascript: (function () { var f = document.createElement('script'); f.innerHTML = 'var stuccoId = \"" + hash + "\"; var host = \"" + host + "\";'; document.body.appendChild(f); var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https:"+host+"modalForm.js'); } else { e.setAttribute('src', 'http:"+host+"modalForm.js'); } document.body.appendChild(e); })();";
+    $('bookmarklet').setAttribute('href', href);
+  }
+
+  function revealBookmarklet() {
+    $('initialHide').style.display = 'block';
+  }
+</script>
 </body>
 </html>

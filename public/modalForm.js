@@ -1,54 +1,3 @@
-(function() {
-var protocol = document.location.protocol
-  , userid = stuccoId; //stuccoId is determined via user email
-
-console.log(host);
-
-// load picoModal before launching the modal form
-loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
-
-function init(source) {
-  loadCSS(protocol+host+'pure.css');
-  loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
-  loadCSS(protocol+host+'stucco.css');
-
-  var modal = launchModal(protocol+host+'stucco.html'); 
-
-  document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
-  document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
-
-  document.getElementById('stuccoSubmit').addEventListener(
-    'click', postAndClose, false
-  );
-
-  function postAndClose(e) {
-    e.preventDefault();
-    var d = processStuccoForm();
-    postJSON(protocol+host+'', JSON.stringify(d));
-    modal.close();
-  }
-}
-
-function launchModal(loc) {
-  var opts = {
-    content: loadHTML(loc),   
-    closeButton: false,
-    shadowClose: false
-  }  
-  return picoModal(opts); 
-}
-
-function processStuccoForm() {
-  return {
-      url:          document.URL,
-      date:         new Date(),
-      relevance:    getRadioSelection('relevance'),
-      importance:   getRadioSelection('importance'),
-      credibility:  getRadioSelection('credibility'),
-      userid:       userid
-    };
-}
-
 function postJSON(loc, data) {
   var req = new XMLHttpRequest();
   req.open('POST', loc, true);
@@ -80,12 +29,10 @@ function loadScript(url, callback) {
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = url;
-
   // then bind the event to the callback function 
   // there are several events for cross browser compatibility
   script.onreadystatechange = callback;
   script.onload = callback;
-
   head.appendChild(script);
 }
 
@@ -99,10 +46,57 @@ function loadCSS(file) {
 }
 
 function loadHTML(loc) {
-  console.log(loc);
   var req = new XMLHttpRequest();
   req.open('GET', loc, false);
   req.send();
   return req.responseText;
+}
+
+(function() {
+var protocol = document.location.protocol
+  , userid   = stuccoId //stuccoId is determined via user email
+  , modal;
+
+// load picoModal before launching the modal form
+loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
+
+function init(source) {
+  loadCSS(protocol+host+'pure.css');
+  loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
+  loadCSS(protocol+host+'stucco.css');
+
+  modal = launchModal(protocol+host+'stucco.html'); 
+
+  document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
+  document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
+  document.getElementById('stuccoSubmit')
+    .addEventListener('click', postAndClose, false);
+}
+
+function postAndClose(e) {
+  e.preventDefault();
+  var d = processStuccoForm();
+  postJSON(protocol+host+'', JSON.stringify(d));
+  modal.close();
+}
+
+function launchModal(loc) {
+  var opts = {
+    content: loadHTML(loc),   
+    closeButton: false,
+    shadowClose: false
+  }  
+  return picoModal(opts); 
+}
+
+function processStuccoForm() {
+  return {
+      url:          document.URL,
+      date:         new Date(),
+      relevance:    getRadioSelection('relevance'),
+      importance:   getRadioSelection('importance'),
+      credibility:  getRadioSelection('credibility'),
+      userid:       userid
+    };
 }
 })();
