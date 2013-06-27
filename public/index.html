@@ -44,53 +44,157 @@
 <div class="container">
   <h2>Stucco Relevance / Credibility Study </h2>
 
-  <div class="instructions">
-    <p>Enter your email to generate a unique identification string.</p>
-    <p>Your email is <strong>not</strong> stored, only the hash is used.</p>
+<div id="initialHide" class="hidden">
+  <p id="stuccoId"></p>
+
+  <p>
+    <a id="bookmarklet">Stucco Bookmarklet</a>
+    <span id="drag">← Drag this to your bookmarks bar.</span>
+  </p>
+
+  <p id="clickTest">(Click the bookmarklet to immediately test on this page.)</p>
+
+<h3> Submit URLs here </h3>
+<p>
+If you would like to submit URLs here, you can do so below.
+</p>
+
+<div id="backupForm">
+<form class='pure-form'>
+
+<fieldset>
+  <div class="label-block">
+    <label for="document-url">Enter the document url:</label>
   </div>
-  <form class="pure-form">
-    <fieldset>
-      <br />
-      <input id="email" class="pure-input-1-2" name="email" type="email" placeholder="email address" >
-      <button id="createIdBtn" class="pure-button pure-button-primary" onclick="createId();return false;">Create ID</button>
-    </fieldset>
-  </form>
+  <input type="text" id="url" name="document-url" required>
+</fieldset>
 
-  <div id="initialHide" class="hidden">
-    <p id="stuccoId"></p>
+<fieldset>
+  <div class="label-block"><label for="relevance2">How relevant is this document to cyber security?</label></div>
+  Not Relevant
+  <input class="ranking" type="radio" name="relevance2" value="1" required>
+  <input class="ranking" type="radio" name="relevance2" value="2" required>
+  <input class="ranking" type="radio" name="relevance2" value="3" required>
+  <input class="ranking" type="radio" name="relevance2" value="4" required>
+  <input class="ranking" type="radio" name="relevance2" value="5" required>
+  Very Relevant
+</fieldset>
 
-    <p>
-      <a id="bookmarklet">Stucco Bookmarklet</a>
-      <span id="drag">← Drag this to your bookmarks bar.</span>
-    </p>
+<fieldset>
+  <div class="label-block"><label for="concept2">Which domain concepts are described in this document?</label></div>
+  <input class="categorical" type="checkbox" name="concept2" value="vulnerability" > vulnerability
+  <input class="categorical" type="checkbox" name="concept2" value="exploit" > exploit
+  <input class="categorical" type="checkbox" name="concept2" value="malware" > malware
+  <input class="categorical" type="checkbox" name="concept2" value="attack" > attack
+  <input class="categorical" type="checkbox" name="concept2" value="attacker" > attacker
+</fieldset>
 
-    <p id="clickTest">(Click the bookmarklet to immediately test on this page.)</p>
-  </div>
+<fieldset>
+  <div class="label-block"><label for="credibility2">How credible is the source of the document?</label></div>
+  Not Credible
+  <input class="ranking" type="radio" name="credibility2" value="1" required>
+  <input class="ranking" type="radio" name="credibility2" value="2" required>
+  <input class="ranking" type="radio" name="credibility2" value="3" required>
+  <input class="ranking" type="radio" name="credibility2" value="4" required>
+  <input class="ranking" type="radio" name="credibility2" value="5" required>
+  Very Credible
+</fieldset>
+
+<fieldset>
+  <button id="stuccoSubmit2" class="pure-button pure-button-primary">Submit Ratings</button>
+</fieldset>
+
+</form>
+</div>
+
+</div> <!-- end hidden -->
+
+
+<div class="instructions">
+  <p>Enter your email to generate a unique identification string.</p>
+  <p>Your email is <strong>not</strong> stored, only the hash is used.</p>
+</div>
+<form class="pure-form">
+  <fieldset>
+    <br />
+    <input id="email" class="pure-input-1-2" name="email" type="email" placeholder="email address" >
+    <button id="createIdBtn" class="pure-button pure-button-primary" onclick="createId();return false;">Create ID</button>
+  </fieldset>
+</form>
+
 </div>
 
 <script type="text/javascript">
-  var $ = function(id) { return document.getElementById(id); };
+var $ = function(id) { return document.getElementById(id); };
+var hash;
 
-  function createId () {
-    'use strict';
-    var email = $('email').value
-      , hash = md5(email ? email : new Date().getTime())
-      , host = '//dev.codementum.org/' ; // 'stucco.aws.af.cm'
-      
-    $('stuccoId').innerHTML = 'ID: &nbsp; ' + hash;
+function createId () {
+  'use strict';
+  var email = $('email').value
+    , host = '//dev.codementum.org/';  // 'stucco.aws.af.cm'
+    
+  hash = md5(email ? email : new Date().getTime());
 
-    addBookmarklet(hash, host);
-    revealBookmarklet();
+  $('stuccoId').innerHTML = 'ID: &nbsp; ' + hash;
+
+  addBookmarklet(hash, host);
+  revealBookmarklet();
+}
+
+function addBookmarklet(hash, host) {
+  var href = "javascript:javascript: (function () { var f = document.createElement('script'); f.innerHTML = 'var stuccoId = \"" + hash + "\"; var host = \"" + host + "\";'; document.body.appendChild(f); var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https:"+host+"modalForm.js'); } else { e.setAttribute('src', 'http:"+host+"modalForm.js'); } document.body.appendChild(e); })();";
+  $('bookmarklet').setAttribute('href', href);
+}
+
+function revealBookmarklet() {
+  $('initialHide').style.display = 'block';
+}
+
+function postJSON(loc, data) {
+  var req = new XMLHttpRequest();
+  req.open('POST', loc, true);
+  req.setRequestHeader('Content-type', 'application/json');
+  req.send(data);
+  req.addEventListener('load', function() {
+    console.log('successful POST');
+  }, false);
+  req.addEventListener('error', function() {
+    postJSON('/error', JSON.stringify({msg: "error on POST"}));
+  }, false);
+}
+
+function getRadioSelection(radioName) {
+  var radios = document.getElementsByName(radioName);
+  var value;
+  for (var i = 0; i < radios.length; i++) {
+    if (radios[i].type === 'radio' && radios[i].checked) {
+      value = radios[i].value;       
+    }
   }
+  return value;
+}
 
-  function addBookmarklet(hash, host) {
-    var href = "javascript:javascript: (function () { var f = document.createElement('script'); f.innerHTML = 'var stuccoId = \"" + hash + "\"; var host = \"" + host + "\";'; document.body.appendChild(f); var e = document.createElement('script'); if (window.location.protocol === 'https:') { e.setAttribute('src', 'https:"+host+"modalForm.js'); } else { e.setAttribute('src', 'http:"+host+"modalForm.js'); } document.body.appendChild(e); })();";
-    $('bookmarklet').setAttribute('href', href);
-  }
+  document.getElementById('stuccoSubmit2')
+    .addEventListener('click', processAndPost, false);
 
-  function revealBookmarklet() {
-    $('initialHide').style.display = 'block';
-  }
+function processAndPost(e) {
+  e.preventDefault();
+  var d = processBackupForm();
+  console.log(d);
+  postJSON('/', JSON.stringify(d));
+}
+
+function processBackupForm() {
+  return {
+      url:          document.URL,
+      date:         new Date(),
+      relevance:    getRadioSelection('relevance2'),
+      importance:   getRadioSelection('importance2'),
+      credibility:  getRadioSelection('credibility2'),
+      userid:       hash
+    };
+}
+
 </script>
 </body>
 </html>
