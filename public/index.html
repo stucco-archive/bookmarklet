@@ -52,57 +52,59 @@
     <span id="drag">← Drag this to your bookmarks bar.</span>
   </p>
 
-<h3>Directly Submit URLs</h3>
+  <br /><br />
 
-<div id="backupForm">
-<form class='pure-form'>
+  <h3>Directly Submit URLs</h3>
 
-<legend>Submit URLs directly without using bookmarklet.</legend>
+  <div id="backupForm">
+  <form class='pure-form'>
 
-<fieldset>
-  <div class="label-block">
-    <label for="document-url">Enter the document url:</label>
+  <legend>Submit URLs directly without using bookmarklet.</legend>
+
+  <fieldset>
+    <div class="label-block">
+      <label for="document-url">Enter the document url:</label>
+    </div>
+    <input type="text" id="url" name="document-url" class="pure-input-1" placeholder="http://example.com/" required>
+  </fieldset>
+
+  <fieldset>
+    <div class="label-block"><label for="relevance2">How relevant is this document to cyber security?</label></div>
+    Not Relevant
+    <input class="ranking" type="radio" name="relevance2" value="1" required>
+    <input class="ranking" type="radio" name="relevance2" value="2" required>
+    <input class="ranking" type="radio" name="relevance2" value="3" required>
+    <input class="ranking" type="radio" name="relevance2" value="4" required>
+    <input class="ranking" type="radio" name="relevance2" value="5" required>
+    Very Relevant
+  </fieldset>
+
+  <fieldset>
+    <div class="label-block"><label for="concept2">Which, if any, domain concepts are described in this document?</label></div>
+    <input class="categorical" type="checkbox" name="concept2" value="vulnerability" > vulnerability
+    <input class="categorical" type="checkbox" name="concept2" value="exploit" > exploit
+    <input class="categorical" type="checkbox" name="concept2" value="malware" > malware
+    <input class="categorical" type="checkbox" name="concept2" value="attack" > attack
+    <input class="categorical" type="checkbox" name="concept2" value="attacker" > attacker
+  </fieldset>
+
+  <fieldset>
+    <div class="label-block"><label for="credibility2">How credible is the source of the document?</label></div>
+    Not Credible
+    <input class="ranking" type="radio" name="credibility2" value="1" required>
+    <input class="ranking" type="radio" name="credibility2" value="2" required>
+    <input class="ranking" type="radio" name="credibility2" value="3" required>
+    <input class="ranking" type="radio" name="credibility2" value="4" required>
+    <input class="ranking" type="radio" name="credibility2" value="5" required>
+    Very Credible
+  </fieldset>
+
+  <fieldset>
+    <button id="stuccoSubmit2" class="pure-button pure-button-primary">Submit Ratings</button>
+  </fieldset>
+
+  </form>
   </div>
-  <input type="text" id="url" name="document-url" class="pure-input-1" placeholder="http://example.com/" required>
-</fieldset>
-
-<fieldset>
-  <div class="label-block"><label for="relevance2">How relevant is this document to cyber security?</label></div>
-  Not Relevant
-  <input class="ranking" type="radio" name="relevance2" value="1" required>
-  <input class="ranking" type="radio" name="relevance2" value="2" required>
-  <input class="ranking" type="radio" name="relevance2" value="3" required>
-  <input class="ranking" type="radio" name="relevance2" value="4" required>
-  <input class="ranking" type="radio" name="relevance2" value="5" required>
-  Very Relevant
-</fieldset>
-
-<fieldset>
-  <div class="label-block"><label for="concept2">Which, if any, domain concepts are described in this document?</label></div>
-  <input class="categorical" type="checkbox" name="concept2" value="vulnerability" > vulnerability
-  <input class="categorical" type="checkbox" name="concept2" value="exploit" > exploit
-  <input class="categorical" type="checkbox" name="concept2" value="malware" > malware
-  <input class="categorical" type="checkbox" name="concept2" value="attack" > attack
-  <input class="categorical" type="checkbox" name="concept2" value="attacker" > attacker
-</fieldset>
-
-<fieldset>
-  <div class="label-block"><label for="credibility2">How credible is the source of the document?</label></div>
-  Not Credible
-  <input class="ranking" type="radio" name="credibility2" value="1" required>
-  <input class="ranking" type="radio" name="credibility2" value="2" required>
-  <input class="ranking" type="radio" name="credibility2" value="3" required>
-  <input class="ranking" type="radio" name="credibility2" value="4" required>
-  <input class="ranking" type="radio" name="credibility2" value="5" required>
-  Very Credible
-</fieldset>
-
-<fieldset>
-  <button id="stuccoSubmit2" class="pure-button pure-button-primary">Submit Ratings</button>
-</fieldset>
-
-</form>
-</div>
 
 </div> <!-- end hidden -->
 
