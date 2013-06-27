@@ -132,7 +132,7 @@ var hash;
 function createId () {
   'use strict';
   var email = $('email').value
-    , host = '//dev.codementum.org/';  // 'stucco.aws.af.cm'
+    , host = '//localhost/';  // 'stucco.aws.af.cm'
     
   hash = md5(email ? email : new Date().getTime());
 
