@@ -109,18 +109,19 @@ If you would like to submit URLs here, you can do so below.
 
 </div> <!-- end hidden -->
 
-
-<div class="instructions">
-  <p>Enter your email to generate a unique identification string.</p>
-  <p>Your email is <strong>not</strong> stored, only the hash is used.</p>
+<div id="instruction-block">
+  <div class="instructions">
+    <p>Enter your email to generate a unique identification string.</p>
+    <p>Your email is <strong>not</strong> stored, only the hash is used.</p>
+  </div>
+  <form class="pure-form">
+    <fieldset>
+      <br />
+      <input id="email" class="pure-input-1-2" name="email" type="email" placeholder="email address" >
+      <button id="createIdBtn" class="pure-button pure-button-primary" onclick="createId();return false;">Create ID</button>
+    </fieldset>
+  </form>
 </div>
-<form class="pure-form">
-  <fieldset>
-    <br />
-    <input id="email" class="pure-input-1-2" name="email" type="email" placeholder="email address" >
-    <button id="createIdBtn" class="pure-button pure-button-primary" onclick="createId();return false;">Create ID</button>
-  </fieldset>
-</form>
 
 </div>
 
@@ -136,6 +137,7 @@ function createId () {
   hash = md5(email ? email : new Date().getTime());
 
   $('stuccoId').innerHTML = 'ID: &nbsp; ' + hash;
+  $('instruction-block').style.display = 'none';
 
   addBookmarklet(hash, host);
   revealBookmarklet();
