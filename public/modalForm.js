@@ -40,7 +40,7 @@ function processStuccoForm() {
       url:          document.URL,
       date:         new Date(),
       relevance:    getRadioSelection('relevance'),
-      importance:   getRadioSelection('importance'),
+      concept:      getCheckboxSelection('concept'),
       credibility:  getRadioSelection('credibility'),
       userid:       userid
     };
@@ -68,6 +68,17 @@ function getRadioSelection(radioName) {
     }
   }
   return value;
+}
+
+function getCheckboxSelection(name) {
+  var checks = document.getElementsByName(name);
+  var d = [];
+  for (var i = 0; i < checks.length; i++) {
+    if (checks[i].type === 'checkbox' && checks[i].checked) {
+      d.push( checks[i].value );
+    }
+  }
+  return d;
 }
 
 // from http://stackoverflow.com/a/950146

@@ -173,6 +173,16 @@ function getRadioSelection(radioName) {
   }
   return value;
 }
+function getCheckboxSelection(name) {
+  var checks = document.getElementsByName(name);
+  var d = [];
+  for (var i = 0; i < checks.length; i++) {
+    if (checks[i].type === 'checkbox' && checks[i].checked) {
+      d.push( checks[i].value );
+    }
+  }
+  return d;
+}
 
   document.getElementById('stuccoSubmit2')
     .addEventListener('click', processAndPost, false);
@@ -189,7 +199,7 @@ function processBackupForm() {
       url:          document.URL,
       date:         new Date(),
       relevance:    getRadioSelection('relevance2'),
-      importance:   getRadioSelection('importance2'),
+      concept:      getCheckboxSelection('concept2'),
       credibility:  getRadioSelection('credibility2'),
       userid:       hash
     };
