@@ -32,8 +32,22 @@
     background: #777;
     color: white;
   }
-  .hidden {
-    display: none;
+  #status {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    color:#eee;
+    font-size:18px;
+    padding:10px;
+    margin:10px 0;
+    display:none;
+  }
+  .status-success {
+    background-color:#81A68A;
+  }
+  .status-error {
+    background-color:#991C00;
   }
   fieldset {
     margin:24px 0 !important;
@@ -68,6 +82,8 @@
   <h2>Stucco Relevance / Credibility Study </h2>
 
   <h3>Directly Submit URLs</h3>
+
+  <div id="status"></div>
 
   <div id="backupForm">
     <form class='pure-form'>
@@ -124,17 +140,26 @@
 <script type="text/javascript">
   var $ = function(id) { return document.getElementById(id); };
 
-  document.getElementById('stuccoSubmit').addEventListener('click', processAndPost, false);
+  $('stuccoSubmit').addEventListener('click', processAndPost, false);
 
   function postJSON(loc, data) {
     var req = new XMLHttpRequest();
     req.open('POST', loc, true);
     req.setRequestHeader('Content-type', 'application/json');
     req.send(data);
-    req.addEventListener('load', function() {
-      console.log('successful POST');
+    req.addEventListener('load', function(e) {
+      if (req.status === 404) {
+        var msg = 'Error posting, unable to connect to server: ' + req.statusText;
+        showStatus('error', msg);
+        console.log(msg);
+        return false;
+      }
+      showStatus('success', 'Successfully posted for url: ' + data.url);
+      console.log('Successfully posted ' + e);
     }, false);
-    req.addEventListener('error', function() {
+    req.addEventListener('error', function(e) {
+      showStatus('error', 'Unable to post url: ' + data.url);
+      console.log('Error posting ' + e);
       postJSON('/error', JSON.stringify({msg: "error on POST"}));
     }, false);
   }
@@ -149,6 +174,7 @@
     }
     return value;
   }
+
   function getCheckboxSelection(name) {
     var checks = document.getElementsByName(name);
     var d = [];
@@ -165,6 +191,13 @@
     var d = processBackupForm();
     console.log(d);
     postJSON('/', JSON.stringify(d));
+  }
+
+  // status = 'success' or 'error'
+  function showStatus(status, msg) {
+    if (status) { $('status').className = 'status-' + status; }
+    $('status').innerHTML = msg;
+    $('status').style.display = 'block';
   }
 
   function processBackupForm() {

@@ -1,6 +1,6 @@
 .pico-content {
 	overflow:auto !important;
-	height:400px !important;
+	height:420px !important;
 	width:500px !important;
   margin-top:100px !important;
 }
@@ -25,12 +25,29 @@
   margin-left:10px !important;
 }
 #stucco .document-meta {
-  margin-top: 5px !important;
-  color: #999 !important;
+  margin-top:5px !important;
+  color:#999 !important;
 }
 #stucco #document-title {
-  font-size: 14px !important;
+  font-size:14px !important;
 }
 #stucco #document-url {
-  font-size: 12px !important;
+  font-size:12px !important;
+}
+#stucco #document-status {
+  -moz-border-radius:5px !important;
+  -webkit-border-radius:5px !important;
+  -khtml-border-radius:5px !important;
+  border-radius:5px !important;
+  color:#eee !important;
+  font-size:18px !important;
+  padding:10px !important;
+  margin:10px 0 !important;
+
+}
+.status-success {
+  background-color:#81A68A !important;
+}
+.status-error {
+  background-color:#991C00 !important;
 }

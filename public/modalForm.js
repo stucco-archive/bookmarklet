@@ -1,7 +1,9 @@
 (function() {
 var protocol = document.location.protocol
   , userid   = stuccoId //stuccoId is determined via user email
-  , modal;
+  , modal
+  , statusEl
+  , $ = function(id) { return document.getElementById(id); };
 
 // load picoModal before launching the modal form
 loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
@@ -13,10 +15,10 @@ function init(source) {
 
   modal = launchModal(protocol+host+'stucco.html'); 
 
-  document.getElementById('document-title').innerHTML = 'Title: ' + document.title;
-  document.getElementById('document-url').innerHTML   = 'URL:   ' + document.URL;
-  document.getElementById('stuccoSubmit')
-    .addEventListener('click', postAndClose, false);
+  $('document-title').innerHTML = 'Title: ' + document.title;
+  $('document-url').innerHTML   = 'URL:   ' + document.URL;
+  statusEl = $('document-status');
+  $('stuccoSubmit').addEventListener('click', postAndClose, false);
 }
 
 function postAndClose(e) {
@@ -51,12 +53,29 @@ function postJSON(loc, data) {
   req.open('POST', loc, true);
   req.setRequestHeader('Content-type', 'application/json');
   req.send(data);
-  req.addEventListener('load', function() {
-    console.log('successful POST');
+  req.addEventListener('load', function(e) {
+    if (req.status === 404) {
+      var msg = 'Error posting, unable to connect to server: ' + req.statusText;
+      showStatus('error', msg);
+      console.log(msg);
+      return false;
+    }
+    showStatus('success', 'Successfully posted for url: ' + data.url);
+    console.log('Successfully posted ' + e);
   }, false);
-  req.addEventListener('error', function() {
-    postJSON(protocol+host+'error', JSON.stringify({msg: "error on POST"}));
+  req.addEventListener('error', function(e) {
+    showStatus('error', 'Unable to post url: ' + data.url);
+    console.log('Error posting ' + e);
+    postJSON('/error', JSON.stringify({msg: "error on POST"}));
   }, false);
+}
+
+// status = 'success' or 'error'
+function showStatus(status, msg) {
+  console.log(statusEl)
+  if (status) { statusEl.className = 'status-' + status; }
+  statusEl.innerHTML = msg;
+  statusEl.style.display = 'block';
 }
 
 function getRadioSelection(radioName) {
