@@ -1,5 +1,5 @@
 [Oak Ridge National Laboratory](http://www.ornl.gov/) is leading a research project for the [Department of Homeland Security Cyber Security Division](http://www.cyber.st.dhs.gov/).
-As part of the project we are building a cyber security knowledge graph to facilitate analyzing security events and incident handling.
+As part of the project **we are building a cyber security knowledge graph** to facilitate analyzing security events and incident handling.
 Part of the data used to build the knowledge graph will be blog posts, news stories, and other online information.
 
 We are collecting anonymous data that will help us label security information that will be used in extracting information into the knowledge graph. 
