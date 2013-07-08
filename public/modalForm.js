@@ -9,6 +9,7 @@ var protocol = document.location.protocol
 loadScript(protocol+host+'components/PicoModal/picoModal.min.js', init);
 
 function init(source) {
+  console.log(picoModal);
   loadCSS(protocol+host+'pure.css');
   loadCSS(protocol+host+'components/cleanslate/cleanslate.min.css');
   loadCSS(protocol+host+'stucco.css');
